@@ -1,0 +1,9 @@
+from django.contrib import admin
+from .models import Plants,Information,Image
+
+admin.site.register(Plants)
+admin.site.register(Information)
+admin.site.register(Image)
+
+
+# Register your models here.

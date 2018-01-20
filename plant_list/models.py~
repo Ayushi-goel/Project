@@ -1,0 +1,30 @@
+from __future__ import unicode_literals
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class Plants(models.Model):
+    Name = models.CharField(max_length=100)
+    Species_id= models.CharField(max_length=100,primary_key=True)
+         
+    def __unicode__(self):
+    	 return self.Name
+
+class Information(models.Model):
+    Family=models.CharField(max_length=100)
+    Scientific_Name=models.CharField(max_length=100)
+    Synonym=models.CharField(max_length=100)
+    Vernacular_name=models.CharField(max_length=100)
+    Species_id  = models.CharField(max_length=100,primary_key=True)
+    def __unicode__(self):
+    	 return self.Species_id
+
+
+class Image(models.Model):
+  Species_id  = models.CharField(max_length=100)
+  image_name =models.CharField(max_length=100,primary_key=True)
+  def __unicode__(self):
+    	 return self.image_name
+   
+
+# Create your models here.

@@ -1,0 +1,52 @@
+from django.shortcuts import render
+from .models import Plants
+import re
+import MySQLdb
+sc='1'
+def dictfetchall(cursor):
+    "Returns all rows from a cursor as a dict."
+    desc = cursor.description
+    return [
+        dict(zip([col[0] for col in desc], row))
+        for row in cursor.fetchall()
+    ]
+def home(request):
+    db = MySQLdb.connect(user='root', db='testdb', passwd='ayushi',  host='localhost')
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM plant_list_plants')
+    queryset = dictfetchall(cursor)
+    db.close()
+    return render(request, 'home.html', {'pname': queryset})
+
+def plant_info(request, pk):
+    db = MySQLdb.connect(user='root', db='testdb', passwd='ayushi',  host='localhost')
+    cursor = db.cursor()
+    pk=re.sub('^[^=]*=', '',pk)
+    pk="SpeciesID="+pk;
+    cursor.execute("SELECT Family,Scientific_Name,Synonym,Species_id FROM plant_list_information where Species_id = %s",(pk,))
+    row = cursor.fetchone()
+    if row:
+     family=row[0];
+     Scien=row[1];
+     Syno=row[2];
+     spec=row[3];
+     family=re.sub('^.', '', row[0])
+     Scien=re.sub('^.', '', row[1])
+     Syno=re.sub('^.', '', row[2])
+     db.close()
+     return render(request, 'info.html',{'family':family,'Scien':Scien,'Syno':Syno,'spec':spec,'pk':pk})
+    else:
+     return render(request, 'info.html',{'family':'Something went wrong','Scien':'Something went wrong','Syno':'Something went wrong','spec':'Something went wrong','pk':pk})
+ 
+
+def plant_image(request,pk):
+   db = MySQLdb.connect(user='root', db='testdb', passwd='ayushi',  host='localhost')
+   cursor = db.cursor()
+   pk=re.sub('^[^=]*=', '',pk)
+   pk="SpeciesID="+pk;
+   cursor.execute("SELECT image_name FROM plant_list_image where Species_id=%s",(pk,))
+   queryset = dictfetchall(cursor)
+   db.close()
+   return render(request, 'image.html', {'image': queryset,'sc':pk})
+
+    

@@ -1,0 +1,36 @@
+{% load static %}<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Plant-List</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">PLANTS</li>
+      </ol>
+      <table class="table" border='1'>
+        <thead class="thead-inverse">
+          <tr>
+            <th>Plants</th>
+            <th>Serial-ID</th>
+            </tr>
+        </thead>
+        <tbody>
+              
+              {% for n in pname %}
+             <tr> 
+             <td ><a href="{% url 'plant_info' n.Species_id %}">{{ n.Name }}</a>       </td>
+             <td >{{n.Species_id}}</td>
+             </tr> 
+             {% endfor %}
+             
+             
+          		     
+              
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
